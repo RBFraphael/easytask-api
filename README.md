@@ -1,66 +1,50 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# EasyTask API
+## Gerenciador de Projetos de Tarefas
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![EasyTask Login Page](screenshot.jpeg)
 
-## About Laravel
+### Introdução
+EasyTask é um gerenciador de projetos e tarefas, com suporte a gestão de usuários, atribuição de responsáveis gerenciais à projetos e atribuição de responsáveis operacionais à tarefas. Simples, direto ao ponto, responsivo, visa atender as mais diversas necessidades de gestão de demandas.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Instalação - API
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+#### Ambiente Local
+Para executar o EasyTask API em ambiente local, siga os passos abaixo:
+1. Crie um arquivo `.env` na raiz do projeto, utilizando como referência o arquivo `.env.example` disponível no repositório.
+2. No arquivo `.env` criado, defina as propriedades abaixo, conforme informado:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+|Propriedade|Descrição|
+|--|--|
+|APP_NAME|Nome da aplicação|
+|APP_URL|URL da aplicação (API)|
+|DB_CONNECTION|Tipo de conexão com banco de dados|
+|DB_HOST|Host do banco de dados|
+|DB_PORT|Porta do banco de dados|
+|DB_DATABASE|Nome do banco de dados|
+|DB_USERNAME|Usuário para acessar o banco de dados|
+|DB_PASSWORD|Senha do usuário para acessar o banco de dados|
 
-## Learning Laravel
+3. Execute o comando `composer install` para instalar todas as dependências da aplicação.
+4. Execute o comando `php artisan jwt:secret` para gerar a chave de segurança dos mecanismos de autenticação JWT.
+5. Execute o comando `php artisan storage:link` para preparar o link simbólico de armazenamento de arquivos.
+6. Execute o comando `php artisan migrate` para que seja construído o banco de dados. **Opcional:** Inclua a flag `--seed` para que seja adicionado no banco o usuário padrão.
+7. Configure o seu servidor local para servir os conteúdos da aplicação a partir do diretório `/public`. Normalmente, em ambientes com servidor Apache, isso é feito com VirtualHosts. Verifique a documentação da aplicação que estiver utilizando para mais informações.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+#### Ambiente hospedado (servidor)
+Para hospedar o EasyTask API em um servidor online, é recomendado utilizar o servidor Apache. Normalmente, hospedagens compartilhadas utilizam essa aplicação para servir seus conteúdos. É importante Atendendo a esse requisito, siga os passos abaixo:
+1. Siga os passos em **Ambiente Local** para preparar a aplicação.
+2. Faça o upload **de todos os arquivos** para seu servidor de hospedagem. É importante verificar se sua hospedagem suporta servir o conteúdo a partir do diretório `/public`. Caso contrário, a aplicação poderá não funcionar como esperado.
+3. Lembre-se de editar o arquivo `.env` para informar as propriedades, agora de acordo com seu servidor de hospedagem.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+#### Testes
+Disponível neste repositório, há uma [collection](EasyTask.postman_collection.json) para a aplicação [Postman](https://www.postman.com/), que pode ser utilizada para entender os endpoints da aplicação e realizar os testes.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+##### Notas Importantes sobre os Testes
+- Ao importar a collection no seu Postman, vá até a aba *Variables* e altere a variável `base_url` para a URL correspondente à API que você configurou, podendo ser em ambiente local ou em ambiente hospedado. Assim, a aplicação funcionará normalmente.
+![Postman collection](postman.jpeg)
+- Mantenha a variável `access_token` vazia após a importação da collection, pois ela é automaticamente preenchida e atualizada quando você executa os endpoints de Login, Logout e Refresh Token.
+- Para iniciar os testes, é importante executar o endpoint de Login. Assim, será gerado o `access_token` para sua sessão, que será armazenado na variável de mesmo nome dentro do Postman e utilizado em todas as requisições subsequentes.
+- Se, durante seus testes, os endpoints retornarem erro de autenticação 401, execute o endpoint Refresh Token, assim seu `access_token` será atualizado e você poderá continuar os testes.
 
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Créditos
+Toda a aplicação EasyTask API foi desenvolvida por Raphael B. Fontão, e está disponível com seu código-fonte no GitHub, em [https://github.com/rbfraphael/easytask-api](https://github.com/rbfraphael/easytask-api). Sua redistribuição, modificação e demais alterações são permitidas sem a necessidade de atribuição de créditos ou direitos autorais.
